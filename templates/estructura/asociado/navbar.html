@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a  {% if vista == 1 %} class="nav-link active" aria-current="page" {% else %} class="nav-link" {% endif %} href="{% url 'asociado:verAsociado' pkAsociado %}">Información</a>
+    </li>
+    <li class="nav-item">
+        <a {% if vista == 9 %} class="nav-link active" aria-current="page" {% else %} class="nav-link" {% endif %} href="{% url 'asociado:historialPagos' pkAsociado %}">Historial Pagos</a>
+    </li>
+</ul>

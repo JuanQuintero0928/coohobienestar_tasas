@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Generar Extractos
+{% endblock title %}
+    
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'reportes:informacionReporte' %}">Reportes</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Generar Extractos</li>
+{% endblock breadcrumb %}
+
+{% block contenidoPagina %}
+
+    <div class="col-xl-12 col-md-12 mb-12">
+        <div class="row">
+            <div class="col-xl-5 col-md-5 mb-5">
+                
+            </div>
+            <div class="col-xl-5 col-md-5 mb-5">
+            
+        </div>
+
+        </div>
+        
+        <div class="card-body">
+            <div class="card mb-4" style="border:0px">
+                <form action="{% url 'reportes:formatoExtracto' %}" method="POST">
+                    {%csrf_token%}
+                    <div class="col-4">
+                        <label for="id_mesExtracto" class="form-label">Seleccione mes a descargar</label>
+                        <select name="mesExtracto" class="form-select" id="id_mesExtracto">
+                            {% for mesSeleccion in mes %}
+                                <option value="{{mesSeleccion.pk}}">{{mesSeleccion.concepto}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="col-4">
+                        <button class="btn btn-outline-primary" type="submit">Generar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+{% endblock contenidoPagina %}
+
+
+
+
+    
+

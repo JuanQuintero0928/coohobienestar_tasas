@@ -1,0 +1,184 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title%}    
+    Asociado
+{% endblock title %}
+    
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="#">Información</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'asociado:asociado' %}">Asociados</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Detalle Asociado</li>
+    <li class="breadcrumb-item active" aria-current="page">{{objAsociado.nombre}} {{objAsociado.apellido}}</li>
+{% endblock breadcrumb %}
+
+{% block contenidoPagina %}
+    {% include 'estructura/asociado/navbar.html' %}
+
+    <div class="card mb-4" style="border:0px">
+        <hr>
+
+        {% comment %} INICIO ACORDEON {% endcomment %}
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+            {% comment %} ACORDEON 1 {% endcomment %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        Personal
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        {% comment %} Formulario Informacion General {% endcomment %}
+                        <form method="post" action="{% url 'asociado:editarAsociado' pkAsociado %}" class="row g-3" id="form">
+                            {% csrf_token %}   
+                            {% comment %} Fila 0 {% endcomment %}
+                            <div class="col-md-2">
+                                <label for="id_hogarinfantil" class="form-label">Hogar Infantil *</label>
+                                <select name="hogarinfantil" class="form-select" id="id_hogarinfantil" disabled>
+                                    <option value="ANGELITOS" {% if objAsociado.hogarinfantil == 'ANGELITOS' %} select {% endif %}>ANGELITOS</option>
+                                    <option value="CELMIRA MEJIA" {% if objAsociado.hogarinfantil == 'CELMIRA MEJIA' %} select {% endif %}>CELMIRA MEJIA</option>
+                                    <option value="ISABELA" {% if objAsociado.hogarinfantil == 'ISABELA' %} select {% endif %}>ISABELA</option>
+                                    <option value="NIÑO DE PRAGA" {% if objAsociado.hogarinfantil == 'NIÑO DE PRAGA' %} select {% endif %}>NIÑO DE PRAGA</option>
+                                    <option value="SANTANDER" {% if objAsociado.hogarinfantil == 'SANTANDER' %} select {% endif %}>SANTANDER</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="id_estadoAsociado" class="form-label">Estado Asociado *</label>
+                                <select name="estadoAsociado" class="form-select" id="id_estadoAsociado" disabled>
+                                    <option value="ACTIVO" {% if objAsociado.estadoAsociado == 'ACTIVO' %} selected {% endif %}>ACTIVO</option>
+                                    {% comment %} <option value="INACTIVO" {% if objAsociado.estadoAsociado == 'INACTIVO' %} selected {% endif %}>INACTIVO</option> {% endcomment %}
+                                    <option value="RETIRO" {% if objAsociado.estadoAsociado == 'RETIRO' %} selected {% endif %}>RETIRO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="id_fechaIngreso" class="form-label">Fecha Ingreso *</label>
+                                <input type="date" value="{{objAsociado.fechaIngreso|date:"Y-m-d"}}" class="form-control" name="fechaIngreso" id="id_fechaIngreso" required disabled>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="id_fechaRetiro" class="form-label">Fecha Retiro</label>
+                                <input type="date" value="{{objAsociado.fechaRetiro|date:"Y-m-d"}}" class="form-control" name="fechaRetiro" id="id_fechaRetiro" disabled>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row" style="display:flex; justify-content:flex-end; margin-right:100px; margin-top:15px">
+                                    <div class="col-sm-1">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="{% url 'asociado:asociado' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
+                                            <a class="btn btn-primary" onclick="editarInputActualizacion('editar')" id="btn-editar"><i class="fa-solid fa-pen-to-square"></i></a>  
+                                            <a class="btn btn-danger" onclick="editarInputActualizacion('no_editar')" id="btn-noeditar" hidden><i class="fa-solid fa-ban"></i></a>  
+                                            <button type="submit" class="btn btn-primary" id="btn-guardar" hidden><i class="fa-solid fa-floppy-disk"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% comment %} Fila 1 {% endcomment %}
+                            <div class="col-md-6">
+                                <label for="id_nombre" class="form-label">Nombres *</label>
+                                <input type="text" value="{{objAsociado.nombre}}" class="form-control input-form" name="nombre" id="id_nombre" maxlength="30" required disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_apellido" class="form-label">Apellidos *</label>
+                                <input type="text" value="{{objAsociado.apellido}}" class="form-control input-form" name="apellido" id="id_apellido" maxlength="30" required disabled>
+                            </div>
+            
+                            {% comment %} Fila 2 {% endcomment %}
+                            <div class="col-3">
+                                <label for="id_tipoDocumento" class="form-label">Tipo Documento *</label>
+                                <select name="tipoDocumento" class="form-select" id="id_tipoDocumento" disabled>
+                                    <option value="CEDULA" {% if objAsociado.tipoDocumento == 'CEDULA' %} selected {% endif %}>CEDULA</option>
+                                    <option value="REGISTRO CIVIL" {% if objAsociado.tipoDocumento == 'REGISTRO CIVIL' %} selected {% endif %}>REGISTRO CIVIL</option>
+                                    <option value="TARJETA IDENTIDAD" {% if objAsociado.tipoDocumento == 'TARJETA IDENTIDAD' %} selected {% endif %}>TARJETA IDENTIDAD</option>
+                                    <option value="CEDULA EXTRANJERA" {% if objAsociado.tipoDocumento == 'CEDULA EXTRANJERA' %} selected {% endif %}>CEDULA EXTRANJERA</option>
+                                    <option value="PASAPORTE" {% if objAsociado.tipoDocumento == 'PASAPORTE' %} selected {% endif %}>PASAPORTE</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label for="id_numDocumento" class="form-label">Número Documento *</label>
+                                <input type="number" value="{{objAsociado.numDocumento}}" class="form-control" name="numDocumento" id="id_numDocumento" min="0" required disabled>
+                            </div>
+                        
+                            <div class="col-3">
+                                <label for="id_numCelular" class="form-label">Telefono Celular *</label>
+                                <input type="number" value="{{objAsociado.numCelular}}" class="form-control" name="numCelular" id="id_numCelular" min="0" required disabled>
+                            </div>
+                            <div class="col-3">
+                                <label for="id_cuota" class="form-label">Cuota *</label>
+                                <input type="number" value="{{objTarifaAsociado.cuota}}" class="form-control" name="cuota" id="id_cuota" min="0" required disabled>
+                            </div>
+                            <hr>
+                        </form>                
+                    </div>                
+                </div>                
+            </div>                
+            {% comment %} ACORDEON 3 {% endcomment %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                        Configuración
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        {% comment %} Formulario Informacion Configuracion {% endcomment %}
+                        <form method="post" class="row g-3" id="form" action="{% url 'asociado:editarParametroAsociado' pkAsociado %}">
+                            {% csrf_token %}
+                            {% comment %} Fila 0 {% endcomment %}
+                            <div class="col-4">
+                                <div class="form-check form-switch">
+                                    <label for="id_primerMes" class="form-label">Mes inicio de pago</label>
+                                    <select name="primesMes" class="form-select" id="id_primerMes" disabled>
+                                        {% for mes in objMes %}
+                                            <option value="{{mes.pk}}" {% if objParametroAsociado.primerMes.pk == mes.pk %} selected {% endif %}>{{mes.concepto}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>                          
+                            <div class="col-md-8">
+                                <div class="row" style="display:flex; justify-content:flex-end; margin-right:47px; margin-top:15px">
+                                    <div class="col-sm-1">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="{% url 'asociado:asociado' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
+                                            <a class="btn btn-primary" onclick="editarInputActualizacion3('editar')" id="btn-editar3"><i class="fa-solid fa-pen-to-square"></i></a>  
+                                            <a class="btn btn-danger" onclick="editarInputActualizacion3('no_editar')" id="btn-noeditar3" hidden><i class="fa-solid fa-ban"></i></a>  
+                                            <button type="submit" class="btn btn-primary" id="btn-guardar3" hidden><i class="fa-solid fa-floppy-disk"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="modal fade" id="creacion" role="dialog">
+        <!-- En este div se visualiza la informacion para la creacion de un nuevo registro de entrada -->
+    </div>
+
+{% endblock contenidoPagina %}
+
+{% block extrajs %}
+
+    <script src="{% static 'lib/jquery-chained/jquery.chained.min.js' %}"></script>
+
+    <script type="text/javascript">
+        var $ = jQuery.noConflict()
+        function abrir_modal_creacion(url){
+            $('#creacion').load(url, function(){
+                $(this).modal('show');
+            });
+        }
+        
+        $("#id_mpioNacimiento").chained("#id_dtoNacimiento");
+        $("#id_mpioResidencia").chained("#id_deptoResidencia");
+        $("#id_mpioTrabajo").chained("#id_dptoTrabajo");
+
+        document.getElementById('id_mpioNacimiento').disabled = true;
+        document.getElementById('id_mpioResidencia').disabled = true;
+        {% if laboral == 'no' %} 
+            document.getElementById('id_mpioTrabajo').disabled = true;
+        {% endif %}
+    </script>
+
+{% endblock extrajs %} 

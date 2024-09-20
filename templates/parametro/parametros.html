@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Configuración de parametros
+{% endblock title %}
+    
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Parametros</li>
+{% endblock breadcrumb %}
+
+{% block contenidoPagina %}
+    <div class="row">
+        <div class="col-xl-2 col-md-2 mb-2">
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    {% block barraLateral %}
+                    <li class="list-group-item"><a href="{% url 'parametro:pais' %}" style="text-decoration:none">Paises Repatriación</a></li>
+                    <li class="list-group-item"><a href="{% url 'parametro:parentesco' %}" style="text-decoration:none">Parentesco</a></li>
+                    <li class="list-group-item"><a href="{% url 'parametro:tarifa' %}" style="text-decoration:none">Tarifas</a></li>
+                    <li class="list-group-item"><a href="{% url 'parametro:tipoAsociado' %}" style="text-decoration:none">Tipo Asociado</a></li>
+                    <li class="list-group-item"><a href="{% url 'parametro:tipoAuxilio' %}" style="text-decoration:none">Tipo Auxilio</a></li>
+                    {% endblock barraLateral %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-xl-10 col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    {% block contenidoParametros %}
+
+                    {% endblock contenidoParametros %}
+                </div>        
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock contenidoPagina %}
+
+
+
+
+    

@@ -1,0 +1,126 @@
+{% extends 'index.html' %}
+{% load static %}   
+
+{% block title%}    
+    Asociado
+{% endblock title %}
+    
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="#">Información</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'asociado:asociado' %}">Asociados</a></li>
+    {% if updateAsociado %}
+        <li class="breadcrumb-item active" aria-current="page">Detalle Asociado</li>
+    {% endif %}
+    {% if create %}
+        <li class="breadcrumb-item active" aria-current="page">Creación Asociado</li>
+    {% endif %}
+{% endblock breadcrumb %}
+
+{% block contenidoPagina %}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Información Personal</a>
+        </li>
+    </ul>
+    <div class="card mb-4" style="border:0px">
+        <div class="row" style="display:flex; justify-content:flex-end; margin-right:25px; margin-top:15px">
+            <div class="col-sm-1">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="{% url 'asociado:asociado' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
+                    {% if updateAsociado %}
+                        <button class="btn btn-primary" onclick="abrir_modal_creacion('{% url 'asociado:editarAsociado' pkAsociado %}')"><i class="fa-solid fa-pen-to-square"></i></button>  
+                    {% endif %}
+                </div>
+            </div>
+        </div> 
+        <form method="post" class="row g-3" id="form">
+            {% csrf_token %}
+                
+                {% comment %} Fila 1 {% endcomment %}
+                <div class="col-md-2">
+                    <label for="id_hogarinfantil" class="form-label">Hogar Infantil *</label>
+                    <select name="hogarinfantil" class="form-select" id="id_hogarinfantil">
+                        <option value="ANGELITOS" select>ANGELITOS</option>
+                        <option value="CELMIRA MEJIA">CELMIRA MEJIA</option>
+                        <option value="ISABELA">ISABELA</option>
+                        <option value="NIÑO DE PRAGA">NIÑO DE PRAGA</option>
+                        <option value="SANTANDER">SANTANDER</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="id_estadoAsociado" class="form-label">Estado Asociado *</label>
+                    <select name="estadoAsociado" class="form-select" id="id_estadoAsociado">
+                        <option value="ACTIVO" select>ACTIVO</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="id_fechaIngreso" class="form-label">Fecha Ingreso *</label>
+                    <input type="date" class="form-control" name="fechaIngreso" id="id_fechaIngreso" required>
+                </div>
+                
+                <div class="col-md-4">
+                </div>
+                {% comment %} Fila 1 {% endcomment %}
+                <div class="col-md-6">
+                    <label for="id_nombre" class="form-label">Nombres *</label>
+                    <input type="text" class="form-control input-form" name="nombre" id="id_nombre" maxlength="30" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_apellido" class="form-label">Apellidos *</label>
+                    <input type="text" class="form-control input-form" name="apellido" maxlength="30" id="id_apellido" required>
+                </div>
+
+                {% comment %} Fila 2 {% endcomment %}
+                <div class="col-3">
+                    <label for="id_tipoDocumento" class="form-label">Tipo Documento *</label>
+                    <select name="tipoDocumento" class="form-select" id="id_tipoDocumento">
+                        <option value="REGISTRO CIVIL" select>REGISTRO CIVIL</option>
+                        <option value="CEDULA">CEDULA</option>
+                        <option value="TARJETA IDENTIDAD">TARJETA IDENTIDAD</option>
+                        <option value="CEDULA EXTRANJERA">CEDULA EXTRANJERA</option>
+                        <option value="PASAPORTE">PASAPORTE</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label for="id_numDocumento" class="form-label">Número Documento *</label>
+                    <input type="number" class="form-control" name="numDocumento" id="id_numDocumento" min="0" required>
+                </div>
+                <div class="col-3">
+                    <label for="id_numCelular" class="form-label">Telefono Celular *</label>
+                    <input type="number" class="form-control" name="numCelular" id="id_numCelular" min="0" required>
+                </div>
+                <div class="col-3">
+                    <label for="id_cuota" class="form-label">Cuota *</label>
+                    <input type="number" class="form-control" name="cuota" id="id_cuota" min="0" required>
+                </div>
+                <hr>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary">Guardar <i class="fa-solid fa-floppy-disk"></i></button>
+                </div>
+        </form>
+    </div>
+    <div class="modal fade" id="creacion" role="dialog">
+        <!-- En este div se visualiza la informacion para la creacion de un nuevo registro de entrada -->
+    </div>
+
+{% endblock contenidoPagina %}
+
+{% block extrajs %}
+
+    <script src="{% static 'lib/jquery-chained/jquery.chained.min.js' %}"></script>
+
+    <script type="text/javascript">
+        var $ = jQuery.noConflict()
+        function abrir_modal_creacion(url){
+            $('#creacion').load(url, function(){
+                $(this).modal('show');
+            });
+        }
+        
+        $("#id_mpioNacimiento").chained("#id_dtoNacimiento");
+        $("#id_mpioResidencia").chained("#id_deptoResidencia");
+
+        </script>
+
+{% endblock extrajs %} 
