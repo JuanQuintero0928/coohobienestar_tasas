@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from asociado.models import Asociado
 from parametro.models import MesTarifa, FormaPago
 
@@ -12,6 +13,8 @@ class HistorialPagos(models.Model):
     valorPago = models.IntegerField('Valor Pago', blank=False, null=False)
     diferencia = models.IntegerField('Diferencia', blank=True, null=True)
     formaPago = models.ForeignKey(FormaPago, on_delete=models.RESTRICT, blank=False, null=False)
+    userCreacion = models.ForeignKey(User, related_name='usuario_creacion', on_delete=models.CASCADE, blank=True, null=True)
+    userModificacion = models.ForeignKey(User, related_name='usuario_modificacion', on_delete=models.CASCADE, blank=True, null=True)
     estadoRegistro = models.BooleanField('Estado')
     fechaCreacion = models.DateTimeField(auto_now_add=True)
     fechaModificacion = models.DateTimeField(auto_now=True)

@@ -1,8 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, CreateView, UpdateView
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, CreateView
+from django.contrib.auth.models import User
 from django.contrib import messages
-from django.urls import reverse_lazy
 from django.db.models import Sum
 
 from .models import HistorialPagos
@@ -34,7 +33,7 @@ class CrearPagoAsociado(CreateView):
             queryMes = MesTarifa.objects.filter(pk__gte = queryParamAsoc.primerMes.pk)
         else:
             queryUltPago = HistorialPagos.objects.filter(asociado = kwargs['pkAsociado']).last()
-            queryMes = MesTarifa.objects.filter(pk__gt = queryUltPago.pk)
+            queryMes = MesTarifa.objects.filter(pk__gt = queryUltPago.mesPago.pk)
         queryPago = FormaPago.objects.all()
         queryHistorial = HistorialPagos.objects.filter(asociado = kwargs['pkAsociado']).aggregate(total=Sum('diferencia'))
         for valor in queryHistorial.values():
@@ -63,6 +62,7 @@ class CrearPagoAsociado(CreateView):
             obj.diferencia = diferencia
             obj.formaPago = FormaPago.objects.get(pk = formaPago)
             obj.estadoRegistro = True
+            obj.userCreacion = User.objects.get(pk = request.user.pk)
             obj.save()
             messages.info(request, 'Pago Registrado Correctamente')
             return redirect('proceso:asociadoPago')
@@ -89,6 +89,7 @@ class EditarPago(ListView):
         objHistorico.formaPago = FormaPago.objects.get(pk = request.POST['formaPago'])
         objHistorico.fechaPago = request.POST['fechaPago']
         objHistorico.valorPago = request.POST['valorPago']
+        objHistorico.userModificacion = User.objects.get(pk = request.user.pk)
         objHistorico.save()
         messages.info(request, 'Pago Modificado Correctamente')
         return redirect('proceso:historicoPagos')
