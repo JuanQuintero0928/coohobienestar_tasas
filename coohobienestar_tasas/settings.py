@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1p#6j&pc%g^6-x5&#q_&*7-o-e$ak^krgu99&e^nyym6jwa522'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','192.168.0.100', '127.0.0.1']
 
@@ -123,19 +124,18 @@ USE_I18N = True
 USE_TZ = True
 
 # Rutas de direccionamiento al iniciar y cerrar sesion
-# LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
-# LOGOUT_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGOUT_REDIRECT_URL = reverse_lazy('dashboard')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles/'
+# STATIC_ROOT = BASE_DIR / 'staticfiles/'
 
-
-# STATICFILES_DIRS = [
-#     BASE_DIR /  "static/"
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR /  "static/"
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
