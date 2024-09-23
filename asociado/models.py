@@ -14,7 +14,7 @@ class Asociado(models.Model):
         ce = 'CE', 'CEDULA EXTRANJERA'
         pa = 'PA', 'PASAPORTE'
         ppt = 'PPT', 'PERMISO PROTECCION TEMPORAL'
-        sd = 'SD', 'SD'
+        sd = 'SD', 'SIN DOCUMENTO'
 
     class estadoAsociadoOp(models.TextChoices):
         activo = 'ACTIVO', 'ACTIVO'
