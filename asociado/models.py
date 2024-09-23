@@ -8,11 +8,13 @@ from parametro.models import MesTarifa
 class Asociado(models.Model):
 
     class tipoDocumentoOp(models.TextChoices):
-        cedula = 'CEDULA', 'CEDULA' 
-        registroCivil = 'REGISTRO CIVIL', 'REGISTRO CIVIL'
-        tarjetaIdentidad = 'TARJETA IDENTIDAD', 'TARJETA IDENTIDAD'
-        cedulaExtranjera = 'CEDULA EXTRANJERA', 'CEDULA EXTRANJERA'
-        pasaporte = 'PASAPORTE', 'PASAPORTE'
+        cc = 'CC', 'CEDULA' 
+        rc = 'RC', 'REGISTRO CIVIL'
+        ti = 'TI', 'TARJETA IDENTIDAD'
+        ce = 'CE', 'CEDULA EXTRANJERA'
+        pa = 'PA', 'PASAPORTE'
+        ppt = 'PPT', 'PERMISO PROTECCION TEMPORAL'
+        sd = 'SD', 'SD'
 
     class estadoAsociadoOp(models.TextChoices):
         activo = 'ACTIVO', 'ACTIVO'
@@ -27,9 +29,11 @@ class Asociado(models.Model):
         santander = 'SANTANDER', 'SANTANDER'
 
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField('Nombre', max_length=30, null=False, blank=False)
-    apellido = models.CharField('Apellido', max_length=30, null=False, blank=False)
-    tipoDocumento = models.CharField('Tipo Documento', choices=tipoDocumentoOp.choices, default=tipoDocumentoOp.cedula, blank=False, null=False)
+    nombre1 = models.CharField('Primer Nombre', max_length=30, null=True, blank=True)
+    nombre2 = models.CharField('Segundo Nombre', max_length=30, null=True, blank=True)
+    apellido1 = models.CharField('Primer Apellido', max_length=30, null=True, blank=True)
+    apellido2 = models.CharField('Segundo Apellido', max_length=30, null=True, blank=True)
+    tipoDocumento = models.CharField('Tipo Documento', choices=tipoDocumentoOp.choices, default=tipoDocumentoOp.rc, blank=False, null=False)
     numDocumento = models.CharField('Número Documento', max_length=10, blank=False, null=False)
     numCelular = models.CharField('Numero Celular', max_length=11, blank=False, null=False)
     hogarinfantil = models.CharField('HogarInfantil', choices=hogarInfantilOp.choices, default=hogarInfantilOp.angelitos, blank=False, null=False)

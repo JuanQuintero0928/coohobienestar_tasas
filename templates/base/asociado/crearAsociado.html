@@ -62,24 +62,34 @@
                 <div class="col-md-4">
                 </div>
                 {% comment %} Fila 1 {% endcomment %}
-                <div class="col-md-6">
-                    <label for="id_nombre" class="form-label">Nombres *</label>
-                    <input type="text" class="form-control input-form" name="nombre" id="id_nombre" maxlength="30" required>
+                <div class="col-md-3">
+                    <label for="id_nombre1" class="form-label">Primer Nombre *</label>
+                    <input type="text" class="form-control input-form" name="nombre1" id="id_nombre1" maxlength="30" required>
                 </div>
-                <div class="col-md-6">
-                    <label for="id_apellido" class="form-label">Apellidos *</label>
-                    <input type="text" class="form-control input-form" name="apellido" maxlength="30" id="id_apellido" required>
+                <div class="col-md-3">
+                    <label for="id_nombre2" class="form-label">Segundo Nombre</label>
+                    <input type="text" class="form-control input-form" name="nombre2" id="id_nombre2" maxlength="30">
+                </div>
+                <div class="col-md-3">
+                    <label for="id_apellido1" class="form-label">Primer Apellido *</label>
+                    <input type="text" class="form-control input-form" name="apellido1" maxlength="30" id="id_apellido1" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="id_apellido2" class="form-label">Segundo Apellido *</label>
+                    <input type="text" class="form-control input-form" name="apellido2" maxlength="30" id="id_apellido2" required>
                 </div>
 
                 {% comment %} Fila 2 {% endcomment %}
                 <div class="col-3">
                     <label for="id_tipoDocumento" class="form-label">Tipo Documento *</label>
                     <select name="tipoDocumento" class="form-select" id="id_tipoDocumento">
-                        <option value="REGISTRO CIVIL" select>REGISTRO CIVIL</option>
-                        <option value="CEDULA">CEDULA</option>
-                        <option value="TARJETA IDENTIDAD">TARJETA IDENTIDAD</option>
-                        <option value="CEDULA EXTRANJERA">CEDULA EXTRANJERA</option>
-                        <option value="PASAPORTE">PASAPORTE</option>
+                        <option value="RC" select>REGISTRO CIVIL</option>
+                        <option value="CC">CEDULA</option>
+                        <option value="TI">TARJETA IDENTIDAD</option>
+                        <option value="CE">CEDULA EXTRANJERA</option>
+                        <option value="PA">PASAPORTE</option>
+                        <option value="PPT">PERMISO PROTECCION TEMPORAL</option>
+                        <option value="SD">SD</option>
                     </select>
                 </div>
                 <div class="col-3">

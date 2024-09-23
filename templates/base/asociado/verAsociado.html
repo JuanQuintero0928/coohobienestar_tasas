@@ -73,24 +73,34 @@
                                 </div>
                             </div>
                             {% comment %} Fila 1 {% endcomment %}
-                            <div class="col-md-6">
-                                <label for="id_nombre" class="form-label">Nombres *</label>
-                                <input type="text" value="{{objAsociado.nombre}}" class="form-control input-form" name="nombre" id="id_nombre" maxlength="30" required disabled>
+                            <div class="col-md-3">
+                                <label for="id_nombre1" class="form-label">Primer Nombre *</label>
+                                <input type="text" value="{{objAsociado.nombre1}}" class="form-control input-form" name="nombre1" id="id_nombre1" maxlength="30" required disabled>
                             </div>
-                            <div class="col-md-6">
-                                <label for="id_apellido" class="form-label">Apellidos *</label>
-                                <input type="text" value="{{objAsociado.apellido}}" class="form-control input-form" name="apellido" id="id_apellido" maxlength="30" required disabled>
+                            <div class="col-md-3">
+                                <label for="id_nombre2" class="form-label">Segundo Nombre</label>
+                                <input type="text" {% if objAsociado.nombre2 != None %} value="{{objAsociado.nombre2}}" {% endif %} class="form-control input-form" name="nombre2" id="id_nombre2" maxlength="30" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="id_apellido1" class="form-label">Primer Apellido *</label>
+                                <input type="text" value="{{objAsociado.apellido1}}" class="form-control input-form" name="apellido1" id="id_apellido1" maxlength="30" required disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="id_apellido2" class="form-label">Segundo Apellido *</label>
+                                <input type="text" value="{{objAsociado.apellido2}}" class="form-control input-form" name="apellido2" id="id_apellido2" maxlength="30" required disabled>
                             </div>
             
                             {% comment %} Fila 2 {% endcomment %}
                             <div class="col-3">
                                 <label for="id_tipoDocumento" class="form-label">Tipo Documento *</label>
                                 <select name="tipoDocumento" class="form-select" id="id_tipoDocumento" disabled>
-                                    <option value="CEDULA" {% if objAsociado.tipoDocumento == 'CEDULA' %} selected {% endif %}>CEDULA</option>
-                                    <option value="REGISTRO CIVIL" {% if objAsociado.tipoDocumento == 'REGISTRO CIVIL' %} selected {% endif %}>REGISTRO CIVIL</option>
-                                    <option value="TARJETA IDENTIDAD" {% if objAsociado.tipoDocumento == 'TARJETA IDENTIDAD' %} selected {% endif %}>TARJETA IDENTIDAD</option>
-                                    <option value="CEDULA EXTRANJERA" {% if objAsociado.tipoDocumento == 'CEDULA EXTRANJERA' %} selected {% endif %}>CEDULA EXTRANJERA</option>
-                                    <option value="PASAPORTE" {% if objAsociado.tipoDocumento == 'PASAPORTE' %} selected {% endif %}>PASAPORTE</option>
+                                    <option value="CC" {% if objAsociado.tipoDocumento == 'CC' %} selected {% endif %}>CEDULA</option>
+                                    <option value="RC" {% if objAsociado.tipoDocumento == 'RC' %} selected {% endif %}>REGISTRO CIVIL</option>
+                                    <option value="TI" {% if objAsociado.tipoDocumento == 'TI' %} selected {% endif %}>TARJETA IDENTIDAD</option>
+                                    <option value="CE" {% if objAsociado.tipoDocumento == 'CE' %} selected {% endif %}>CEDULA EXTRANJERA</option>
+                                    <option value="PA" {% if objAsociado.tipoDocumento == 'PA' %} selected {% endif %}>PASAPORTE</option>
+                                    <option value="PPT" {% if objAsociado.tipoDocumento == 'PPT' %} selected {% endif %}>PERMISO PROTECCION TEMPORAL</option>
+                                    <option value="SD" {% if objAsociado.tipoDocumento == 'SD' %} selected {% endif %}>SD</option>
                                 </select>
                             </div>
                             <div class="col-3">
@@ -169,16 +179,6 @@
                 $(this).modal('show');
             });
         }
-        
-        $("#id_mpioNacimiento").chained("#id_dtoNacimiento");
-        $("#id_mpioResidencia").chained("#id_deptoResidencia");
-        $("#id_mpioTrabajo").chained("#id_dptoTrabajo");
-
-        document.getElementById('id_mpioNacimiento').disabled = true;
-        document.getElementById('id_mpioResidencia').disabled = true;
-        {% if laboral == 'no' %} 
-            document.getElementById('id_mpioTrabajo').disabled = true;
-        {% endif %}
     </script>
 
 {% endblock extrajs %} 

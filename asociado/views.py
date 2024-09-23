@@ -32,8 +32,11 @@ class CrearAsociado(CreateView):
                 # se guarda informacion en el modelo ASOCIADO
                 obj = Asociado()
                 obj.hogarinfantil = request.POST['hogarinfantil']
-                obj.nombre = request.POST['nombre'].upper()
-                obj.apellido = request.POST['apellido'].upper()
+                obj.nombre1 = request.POST['nombre1'].upper()
+                if request.POST['nombre2'] != '':
+                    obj.nombre2 = request.POST['nombre2'].upper()
+                obj.apellido1 = request.POST['apellido1'].upper()
+                obj.apellido2 = request.POST['apellido2'].upper()
                 obj.tipoDocumento = request.POST['tipoDocumento']
                 obj.numDocumento = request.POST['numDocumento']
                 obj.numCelular = request.POST['numCelular']
@@ -99,8 +102,11 @@ class EditarAsociado(CreateView):
             obj.fechaRetiro = request.POST['fechaRetiro']
             obj.estadoAsociado = 'RETIRO'
         obj.hogarinfantil = request.POST['hogarinfantil']
-        obj.nombre = request.POST['nombre'].upper()
-        obj.apellido = request.POST['apellido'].upper()
+        obj.nombre1 = request.POST['nombre1'].upper()
+        if request.POST['nombre2'] != '':
+            obj.nombre2 = request.POST['nombre2'].upper()
+        obj.apellido1 = request.POST['apellido1'].upper()
+        obj.apellido2 = request.POST['apellido2'].upper()
         obj.tipoDocumento = request.POST['tipoDocumento']
         obj.numDocumento = request.POST['numDocumento']
         obj.numCelular = request.POST['numCelular']

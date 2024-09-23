@@ -38,8 +38,10 @@ function editarInputActualizacion(dato){
             document.getElementById('id_estadoAsociado').disabled = false;
             document.getElementById('id_fechaIngreso').disabled = false;
             document.getElementById('id_fechaRetiro').disabled = false;
-            document.getElementById('id_nombre').disabled = false;
-            document.getElementById('id_apellido').disabled = false;
+            document.getElementById('id_nombre1').disabled = false;
+            document.getElementById('id_nombre2').disabled = false;
+            document.getElementById('id_apellido1').disabled = false;
+            document.getElementById('id_apellido2').disabled = false;
             document.getElementById('id_tipoDocumento').disabled = false;
             document.getElementById('id_numDocumento').disabled = false;
             document.getElementById('id_numCelular').disabled = false;
@@ -53,8 +55,10 @@ function editarInputActualizacion(dato){
             document.getElementById('id_estadoAsociado').disabled = true;
             document.getElementById('id_fechaIngreso').disabled = true;
             document.getElementById('id_fechaRetiro').disabled = true;
-            document.getElementById('id_nombre').disabled = true;
-            document.getElementById('id_apellido').disabled = true;
+            document.getElementById('id_nombre1').disabled = true;
+            document.getElementById('id_nombre2').disabled = true;
+            document.getElementById('id_apellido1').disabled = true;
+            document.getElementById('id_apellido2').disabled = true;
             document.getElementById('id_tipoDocumento').disabled = true;
             document.getElementById('id_numDocumento').disabled = true;
             document.getElementById('id_numCelular').disabled = true;

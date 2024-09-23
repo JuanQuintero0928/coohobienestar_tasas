@@ -42,7 +42,7 @@
     {% for obj in query %}
         <tr>
             <th>{{ forloop.counter }}</th>
-            <th>{{ obj.asociado.nombre }} {{obj.asociado.apellido}}</th>
+            <th>{{ obj.asociado.nombre1 }} {% if obj.asociado.nombre2 != None %} {{ obj.asociado.nombre2 }} {% endif %} {{obj.asociado.apellido1}} {{obj.asociado.apellido2}}</th>
             <th>{{ obj.asociado.numDocumento }}</th>
             <th>{{ obj.cuota }}</th>
             <th>{{ obj.asociado.hogarinfantil }}</th>

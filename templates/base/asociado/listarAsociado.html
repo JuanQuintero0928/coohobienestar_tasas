@@ -27,8 +27,8 @@
 {% block tablaencabezado %}
     <tr>
         <th>N° Documento</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
         <th>Hogar Infantil</th>
         <th>Estado</th>
         <th>Opciones</th>
@@ -39,8 +39,8 @@
     {% for obj in query %}
         <tr>
             <th>{{ obj.numDocumento }}</th>
-            <th>{{ obj.nombre }}</th>
-            <th>{{ obj.apellido }}</th>
+            <th>{{ obj.nombre1 }} {% if obj.nombre2 %} {{obj.nombre2}} {% endif %} </th>
+            <th>{{ obj.apellido1 }} {{ obj.apellido2 }}</th>
             <th>{{ obj.hogarinfantil }}</th>
             <th>{{ obj.estadoAsociado }}</th>
             <th>
