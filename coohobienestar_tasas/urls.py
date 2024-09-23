@@ -32,7 +32,6 @@ handler404 = 'coohobienestar_tasas.urls.custom_404'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-    # path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', logout_then_login, name='logout'),
     path('', login_required(Dashboard.as_view()), name='dashboard'),
     path('informacion/', include(('dashboard.urls','informacion'))),  #Plantilla Principal de la base
