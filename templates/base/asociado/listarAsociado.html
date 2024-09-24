@@ -44,7 +44,7 @@
             <th>{{ obj.hogarinfantil }}</th>
             <th>{{ obj.estadoAsociado }}</th>
             <th>
-                <center><a type="button" class="btn btn-outline-primary" href="{% url 'asociado:verAsociado' obj.pk %}"><i class="fa-solid fa-pen"></i></button>
+                <center><a type="button" class="btn btn-outline-primary" href="{% url 'asociado:verAsociado' obj.id %}"><i class="fa-solid fa-pen"></i></button>
             </th>
         </tr>
     {% endfor %}  

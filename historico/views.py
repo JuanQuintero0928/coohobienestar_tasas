@@ -19,7 +19,7 @@ class VerHistoricoPagos(ListView):
 class VerAsociadoPagos(ListView):
     def get(self, request, *args, **kwargs):
         template_name = 'proceso/pago/realizarPago.html'
-        query = TarifaAsociado.objects.all()
+        query = TarifaAsociado.objects.select_related('asociado').all()
         return render(request, template_name, {'query':query})
     
 class CrearPagoAsociado(CreateView):

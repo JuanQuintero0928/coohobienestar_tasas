@@ -6,16 +6,15 @@ from django.urls import reverse_lazy
 
 from .models import Asociado, ParametroAsociado, TarifaAsociado
 from historico.models import HistorialPagos
-from departamento.models import Departamento, Municipio
 from parametro.models import MesTarifa
-
 
 # Create your views here.
 
 class Asociados(ListView):
+
     def get(self, request, *args, **kwargs):
         template_name = 'base/asociado/listarAsociado.html'
-        query = Asociado.objects.all()
+        query = Asociado.objects.values('id','numDocumento','nombre1','nombre2','apellido1','apellido2','hogarinfantil','estadoAsociado')
         return render(request, template_name, {'query':query})
     
 class CrearAsociado(CreateView):
@@ -25,54 +24,56 @@ class CrearAsociado(CreateView):
         return render(request, self.template_name, {'create':'yes'})
     
     def post(self, request, *args, **kwargs):
-        try:
-            numDoc = request.POST['numDocumento']
-            query = Asociado.objects.filter(numDocumento = numDoc).count()
-            if query == 0:
-                # se guarda informacion en el modelo ASOCIADO
-                obj = Asociado()
-                obj.hogarinfantil = request.POST['hogarinfantil']
-                obj.nombre1 = request.POST['nombre1'].upper()
-                if request.POST['nombre2'] != '':
-                    obj.nombre2 = request.POST['nombre2'].upper()
-                obj.apellido1 = request.POST['apellido1'].upper()
-                obj.apellido2 = request.POST['apellido2'].upper()
-                obj.tipoDocumento = request.POST['tipoDocumento']
-                obj.numDocumento = request.POST['numDocumento']
-                obj.numCelular = request.POST['numCelular']
-                obj.fechaIngreso = request.POST['fechaIngreso']
-                obj.estadoAsociado = request.POST['estadoAsociado']
-                obj.estadoRegistro = True
-                obj.save()
-                # se pone valor quemado en la busqueda con el pk, se busca tarifa de aportes y bienestar social
-                objTarifaAsoc = TarifaAsociado()
-                objTarifaAsoc.asociado = Asociado.objects.get(pk = obj.pk)
-                objTarifaAsoc.cuota = request.POST['cuota']
-                objTarifaAsoc.estadoRegistro = True
-                objTarifaAsoc.save()
-                # se guarda informacion en el modelo PARAMETROASOCIADO
-                objParametro = ParametroAsociado()
-                objParametro.asociado = Asociado.objects.get(pk = obj.pk)
-                try:
-                    objParametro.primerMes = MesTarifa.objects.get(fechaInicio__lte = obj.fechaIngreso, fechaFinal__gte = obj.fechaIngreso)
-                except Exception as e:
-                    objParametro.tarifaAsociado = TarifaAsociado.objects.get(pk = objTarifaAsoc.pk)
-                    objParametro.estadoRegistro = True
-                    objParametro.save()
-                    messages.info(request, 'Asociado Creado con hallazgo, fecha de inicio no se agrego en la bd.')
-                    return HttpResponseRedirect(reverse_lazy('asociado:verAsociado', args=[obj.pk]))
+        
+        numDoc = request.POST['numDocumento']
+        validacion = Asociado.objects.filter(numDocumento = numDoc).exists()
+        print(validacion)
+        if validacion:
+            messages.warning(request, 'El asociado con cedula '+ numDoc + ' ya existe en la base de datos.')
+            return HttpResponseRedirect(reverse_lazy('asociado:asociado'))
+        else:
+            # se guarda informacion en el modelo ASOCIADO
+            obj = Asociado()
+            obj.hogarinfantil = request.POST['hogarinfantil']
+            obj.nombre1 = request.POST['nombre1'].upper()
+            if request.POST['nombre2'] != '':
+                obj.nombre2 = request.POST['nombre2'].upper()
+            obj.apellido1 = request.POST['apellido1'].upper()
+            obj.apellido2 = request.POST['apellido2'].upper()
+            obj.tipoDocumento = request.POST['tipoDocumento']
+            obj.numDocumento = request.POST['numDocumento']
+            obj.numCelular = request.POST['numCelular']
+            obj.fechaIngreso = request.POST['fechaIngreso']
+            obj.estadoAsociado = request.POST['estadoAsociado']
+            obj.estadoRegistro = True
+            obj.save()
+            # se pone valor quemado en la busqueda con el pk, se busca tarifa de aportes y bienestar social
+            objTarifaAsoc = TarifaAsociado()
+            objTarifaAsoc.asociado = Asociado.objects.get(pk = obj.pk)
+            objTarifaAsoc.cuota = request.POST['cuota']
+            objTarifaAsoc.estadoRegistro = True
+            objTarifaAsoc.save()
+            # se guarda informacion en el modelo PARAMETROASOCIADO
+            objParametro = ParametroAsociado()
+            objParametro.asociado = Asociado.objects.get(pk = obj.pk)
+            try:
+                objParametro.primerMes = MesTarifa.objects.get(fechaInicio__lte = obj.fechaIngreso, fechaFinal__gte = obj.fechaIngreso)
+            except Exception as e:
                 objParametro.tarifaAsociado = TarifaAsociado.objects.get(pk = objTarifaAsoc.pk)
                 objParametro.estadoRegistro = True
                 objParametro.save()
-
-                messages.info(request, 'Asociado Creado Correctamente')
+                messages.info(request, 'Asociado Creado con hallazgo, fecha de inicio no se agrego en la bd.')
                 return HttpResponseRedirect(reverse_lazy('asociado:verAsociado', args=[obj.pk]))
-            else:
-                messages.warning(request, 'El asociado con cedula '+ numDoc + ' ya existe en la base de datos.')
-                return HttpResponseRedirect(reverse_lazy('asociado:asociado'))
-        except Exception as e:
-            messages.error(request, 'Ocurrio un problema al crear el asociado, comuniquese con el administrador.')
-            return HttpResponseRedirect(reverse_lazy('asociado:asociado'))
+            objParametro.tarifaAsociado = TarifaAsociado.objects.get(pk = objTarifaAsoc.pk)
+            objParametro.estadoRegistro = True
+            objParametro.save()
+
+            messages.info(request, 'Asociado Creado Correctamente')
+            return HttpResponseRedirect(reverse_lazy('asociado:verAsociado', args=[obj.pk]))
+            
+        # except Exception as e:
+        #     messages.error(request, 'Ocurrio un problema al crear el asociado, comuniquese con el administrador.')
+        #     return HttpResponseRedirect(reverse_lazy('asociado:asociado'))
         
 class VerAsociado(ListView):
     template_name = 'base/asociado/verAsociado.html'
