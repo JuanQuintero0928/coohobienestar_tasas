@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'asociado.apps.AsociadoConfig',
     'dashboard.apps.DashboardConfig',
     'departamento.apps.DepartamentoConfig',
@@ -162,6 +163,6 @@ LOGGING = {
 }
 
 
-SESSION_COOKIE_AGE = 3600
+SESSION_COOKIE_AGE = 3600 * 8
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

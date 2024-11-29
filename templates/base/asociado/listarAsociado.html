@@ -26,6 +26,7 @@
 
 {% block tablaencabezado %}
     <tr>
+        <th>ID</th>
         <th>N° Documento</th>
         <th>Nombres</th>
         <th>Apellidos</th>
@@ -38,6 +39,7 @@
 {% block tablafilas %}
     {% for obj in query %}
         <tr>
+            <th>{{ obj.id }}</th>
             <th>{{ obj.numDocumento }}</th>
             <th>{{ obj.nombre1 }} {% if obj.nombre2 %} {{obj.nombre2}} {% endif %} </th>
             <th>{{ obj.apellido1 }} {{ obj.apellido2 }}</th>

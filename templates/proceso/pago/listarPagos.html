@@ -1,5 +1,6 @@
 {% extends 'estructura/tabla.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
     Pagos
@@ -48,15 +49,15 @@
         <tr>
             <th>{{ forloop.counter }}</th>
             <th>{{ obj.asociado.numDocumento }}</th>
-            <th>{{ obj.asociado.nombre1 }} {% if obj.asociado.nombre2 != None %} {{obj.asociado.nombre2}} {% endif %} </th>
+            <th>{{ obj.asociado.nombre1 }} {{obj.asociado.nombre2}}</th>
             <th>{{obj.asociado.apellido1}} {{obj.asociado.apellido2}}</th>
-            <th>{{ obj.fechaPago|date:"d-m-Y" }}</th>
+            <th>{{ obj.fechaPago|date:"d/m/Y" }}</th>
             <th>{{ obj.mesPago }}</th>
-            <th>{{ obj.valorPago  }}</th>
-            <th>{{ obj.diferencia }}</th>
+            <th>${{ obj.valorPago|intcomma  }}</th>
+            <th>${{ obj.diferencia|intcomma }}</th>
             <th>{{ obj.formaPago }}</th>
             <th>{{ obj.asociado.hogarinfantil }}</th>
-            <th><button class="btn btn-outline-primary" onclick="abrir_modal_creacion('{% url 'proceso:editarPagoAsociado' obj.pk obj.asociado.pk %}')"><i class="fa-solid fa-pen-to-square"></i></button></th>
+            <th><button class="btn btn-outline-primary" onclick="abrir_modal_creacion('{% url 'proceso:editarPagoAsociado' obj.pk obj.asociado.pk 2 %}')"><i class="fa-solid fa-pen-to-square"></i></button></th>
         </tr>
     {% endfor %}
 

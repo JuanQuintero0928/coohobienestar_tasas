@@ -6,7 +6,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form action="{% url 'proceso:editarPagoAsociado' pk pkAsociado %}" method="post">
+            <form action="{% url 'proceso:editarPagoAsociado' pk pkAsociado vista %}" method="post">
                 {% csrf_token %}
                 {% comment %} input completo {% endcomment %}
                 <div class="input-group mb-3">

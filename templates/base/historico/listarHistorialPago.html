@@ -1,5 +1,6 @@
 {% extends 'estructura/tabla.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
     Asociado
@@ -13,7 +14,7 @@
     <li class="breadcrumb-item"><a href="#">Información</a></li>
     <li class="breadcrumb-item"><a href="{% url 'asociado:asociado' %}">Asociados</a></li>
     <li class="breadcrumb-item active" aria-current="page">Detalle Asociado</li>
-    <li class="breadcrumb-item active" aria-current="page">{{queryAsociado.nombre}} {{queryAsociado.apellido}}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{queryAsociado.nombre1}} {{queryAsociado.nombre2}} {{queryAsociado.apellido1}} {{queryAsociado.apellido2}} - {{queryAsociado.numDocumento}}</li>
 {% endblock breadcrumb %}
 
 {% block submenu %}
@@ -24,7 +25,7 @@
         <div class="col-sm-1">
             <div class="btn-group" role="group" aria-label="Basic example">
                 <a href="{% url 'asociado:asociado' %}" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
-                <button class="btn btn-primary" onclick="abrir_modal_creacion('{% url 'proceso:crearPagoAsociado' pkAsociado %}')"><i class="fa-solid fa-plus"></i></button>
+                <button class="btn btn-primary" onclick="abrir_modal_creacion('{% url 'proceso:modalPago' pkAsociado 1 %}')"><i class="fa-solid fa-plus"></i></button>
             </div>
         </div>
     </div> 
@@ -55,15 +56,15 @@
         <tr>
             <th>{{ forloop.counter }}</th>
             <th>{{ obj.asociado.numDocumento }}</th>
-            <th>{{ obj.asociado.nombre }} {{obj.asociado.apellido}}</th>
-            <th>{{ obj.fechaPago|date:"d-m-Y" }}</th>
+            <th>{{ obj.asociado.nombre1}} {{obj.asociado.nombre2}} {{obj.asociado.apellido1}} {{obj.asociado.apellido2}}</th>
+            <th>{{ obj.fechaPago|date:"d/m/Y" }}</th>
             <th>{{ obj.mesPago }}</th>
-            <th>{{ obj.valorPago  }}</th>
-            <th>{{ obj.diferencia }}</th>
+            <th>${{ obj.valorPago|intcomma  }}</th>
+            <th>${{ obj.diferencia|intcomma }}</th>
             <th>{{ obj.formaPago }}</th>
             <th>{{ obj.asociado.hogarinfantil }}</th>
             <th><center><button class="btn btn-outline-primary" onclick="abrir_modal_edicion('{% url 'asociado:detallePago' pkAsociado obj.pk %}')"><i class="fa-solid fa-eye"></i></button>
-            <button class="btn btn-outline-primary" onclick="abrir_modal_creacion('{% url 'proceso:editarPagoAsociado' obj.pk obj.asociado.pk %}')"><i class="fa-solid fa-pen-to-square"></i></button></th>
+            <button class="btn btn-outline-primary" onclick="abrir_modal_creacion('{% url 'proceso:editarPagoAsociado' obj.pk obj.asociado.pk 1 %}')"><i class="fa-solid fa-pen-to-square"></i></button></th>
         </tr>
     {% endfor %}
 
