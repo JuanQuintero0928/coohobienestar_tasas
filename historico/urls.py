@@ -8,4 +8,6 @@ urlpatterns = [
     path('crearPagoAsociado/<int:pkAsociado>', login_required(CrearPagoAsociado.as_view()), name='crearPagoAsociado'),
     path('editarPagoAsociado/<int:pk>/<int:pkAsociado>/<int:vista>', login_required(EditarPago.as_view()), name='editarPagoAsociado'),
     path('modalPago/<int:pkAsociado>/<int:vista>', login_required(ModalPago.as_view()), name='modalPago'),
+    path('eliminarPago/<int:pk>/<int:pkAsociado>/<int:vista>', login_required(EliminarPago.as_view()), name='eliminarPago'),
+    
 ]

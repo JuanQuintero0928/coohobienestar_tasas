@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q, F, Value
+from django.db.models.functions import Concat, Coalesce
 from django.urls import reverse_lazy
 
 from .models import Asociado, ParametroAsociado, TarifaAsociado
@@ -11,11 +14,74 @@ from parametro.models import MesTarifa
 # Create your views here.
 
 class Asociados(ListView):
+    template_name = 'base/asociado/listarAsociado.html'
 
     def get(self, request, *args, **kwargs):
-        template_name = 'base/asociado/listarAsociado.html'
-        query = Asociado.objects.values('id','numDocumento','nombre1','nombre2','apellido1','apellido2','hogarinfantil','estadoAsociado')
-        return render(request, template_name, {'query':query})
+        # Si es una petición AJAX, devolver JSON con paginación
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            start = int(request.GET.get('start', 0))
+            length = int(request.GET.get('length', 10))
+            search_value = request.GET.get('search_value', '').strip()  
+            
+            # Obtener columna y dirección de ordenación
+            order_column_index = int(request.GET.get('order[0][column]', 0))
+            order_direction = request.GET.get('order[0][dir]', 'asc')
+
+            # Mapeo de columnas para ordenación
+            column_map = [
+                'id', 'nombre_completo', 'apellido_completo', 'numDocumento', 
+                'hogarinfantil', 'numCelular', 'estadoAsociado'
+            ]
+            
+            # Obtener columna de ordenación (por defecto 'id')
+            order_column = column_map[order_column_index] if order_column_index < len(column_map) else 'id'
+            
+            # Aplicar orden ascendente o descendente
+            if order_direction == 'desc':
+                order_column = f'-{order_column}'
+
+    
+            query = Asociado.objects.values(
+                        'id', 
+                        'numDocumento', 
+                        'hogarinfantil', 
+                        'numCelular', 
+                        'estadoAsociado'
+                    ).annotate(
+                        nombre_completo=Concat(F('nombre1'), Value(' '), Coalesce(F('nombre2'), Value(''))),
+                        apellido_completo=Concat(F('apellido1'), Value(' '), Coalesce(F('apellido2'), Value('')))
+                    ).order_by(order_column)
+
+
+            # Aplicar filtro de búsqueda
+            if search_value:
+                query = query.filter(
+                Q(nombre_completo__icontains=search_value) |
+                Q(apellido_completo__icontains=search_value) |
+                Q(numDocumento__icontains=search_value) |
+                Q(hogarinfantil__icontains=search_value) |
+                Q(numCelular__icontains=search_value) |
+                Q(estadoAsociado__icontains=search_value)
+            )
+
+            total_records = query.count()
+
+            # Aplicar paginación
+            paginator = Paginator(query, length)
+            page_number = (start // length) + 1
+            page = paginator.get_page(page_number)
+
+            return JsonResponse({
+                'draw': int(request.GET.get('draw', 1)),
+                'recordsTotal': total_records,
+                'recordsFiltered': total_records,
+                'data': list(page.object_list),
+            }, safe=False)
+
+        else:
+            # Renderizar la plantilla en la primera carga
+            return render(request, self.template_name)
     
 class CrearAsociado(CreateView):
     template_name = 'base/asociado/crearAsociado.html'
@@ -45,6 +111,7 @@ class CrearAsociado(CreateView):
             obj.numCelular = request.POST['numCelular']
             obj.fechaIngreso = request.POST['fechaIngreso']
             obj.estadoAsociado = request.POST['estadoAsociado']
+            obj.desplazado = 'desplazado' in request.POST
             obj.estadoRegistro = True
             obj.save()
             # se pone valor quemado en la busqueda con el pk, se busca tarifa de aportes y bienestar social

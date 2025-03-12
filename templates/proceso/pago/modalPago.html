@@ -33,7 +33,7 @@
             <hr>
             
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Información Pago:</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Información Pago: </h1>
             </div>
             <br>
             <form action="{% url 'proceso:modalPago' pkAsociado vista %}" method="post">
@@ -91,7 +91,26 @@
                                                 <label class="form-check-label" for="flexSwitchCheckDefault{{obj.pk}}"></label>
                                             </div>
                                         </td>
-                                        <td>${{ query.cuota|intcomma }}</th>
+                                        <td>
+                                            {% if queryParametro.primerMes.pk == obj.pk %}
+                                                <input type="number" 
+                                                    name="valorMes{{obj.pk}}" 
+                                                    value="{{ query.cuota }}" 
+                                                    class="form-control form-control-sm text-center input-costo"
+                                                    data-switch-id="flexSwitchCheckDefault{{ obj.pk }}"
+                                                    oninput="actualizarCosto(this)"
+                                                >
+                                            {% else %}
+                                                <input type="hidden"
+                                                    name="valorMes{{obj.pk}}" 
+                                                    value="{{ query.cuota }}" 
+                                                    class="form-control form-control-sm text-center input-costo"
+                                                    data-switch-id="flexSwitchCheckDefault{{ obj.pk }}"
+                                                    oninput="actualizarCosto(this)"
+                                                >
+                                                ${{ query.cuota|intcomma }}
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
@@ -145,6 +164,17 @@
 
             <script>
                 // Función para actualizar el total según los switches seleccionados
+
+                function actualizarCosto(input) {
+                    let switchId = input.getAttribute("data-switch-id");  // Obtener el ID del switch relacionado
+                    let switchElement = document.getElementById(switchId); // Buscar el switch por su ID
+                    
+                    if (switchElement) {
+                        switchElement.setAttribute("data-costo", input.value);  // Actualizar data-costo con el nuevo valor del input
+                    }
+                    actualizarTotal();
+                }
+
                 function actualizarTotal() {
                     let total = 0;
                     

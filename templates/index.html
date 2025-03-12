@@ -3,7 +3,11 @@
 <html lang="es">
 
     <!-- HEADER -->
-    {% include 'estructura/head.html' %}
+    <head>
+        {% include 'estructura/head.html' %}
+        {% block extraHead %}
+        {% endblock extraHead %}
+    </head>
 
     <body class="sb-nav-fixed">
         <!-- NAVBAR SUPERIOR-->
@@ -137,7 +141,11 @@
 
         <!-- EXTRAJS -->
         {% include 'estructura/extrajs.html' %}
+        {% block extrajsTable %}
+        
+        {% endblock extrajsTable %}
         {% block extrajs %}
+        
         {% endblock extrajs %}
     </body>
 </html>

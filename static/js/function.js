@@ -3,11 +3,13 @@ function editarCasillasPago(dato){
     switch(dato){
         case "editar1":
             document.getElementById('valorPago').disabled = false;
+            document.getElementById('diferencia').disabled = false;
             document.getElementById('btn_editar').hidden = true;
             document.getElementById('btn_no_editar').hidden = false;
         break
         case "no_editar1":
             document.getElementById('valorPago').disabled = true;
+            document.getElementById('diferencia').disabled = true;
             document.getElementById('btn_editar').hidden = false;
             document.getElementById('btn_no_editar').hidden = true;
         break

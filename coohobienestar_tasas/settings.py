@@ -85,14 +85,13 @@ WSGI_APPLICATION = 'coohobienestar_tasas.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "cooho_tasas",
+        "NAME": "cooho_tasas_sardinitos_2025",
         "USER": "user_coohotasas",
         "PASSWORD": "1q2w3e4r",
         "PORT": 5432,
         "HOST": "localhost",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

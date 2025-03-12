@@ -1,5 +1,5 @@
 {% load static %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="{% static 'lib/startbootstrap-sb-admin-gh-pages/js/scripts.js' %} "></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="{% static 'lib/startbootstrap-sb-admin-gh-pages/assets/demo/chart-area-demo.js' %}"></script>
@@ -8,4 +8,13 @@
 <script src="{% static 'lib/startbootstrap-sb-admin-gh-pages/js/datatables-simple-demo.js' %}"></script>
 <script src="{% static 'lib/bootstrap-5.2.3-dist/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'lib/jspdf/1.3.4/jspdf.min.js' %}"></script>
-<script src="{% static 'js/function.js' %}"></script>
+<script src="{% static 'js/function.js' %}"></script> {% endcomment %}
+
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> {% endcomment %}
+<script src="{% static 'lib/cdn/bootstrap.bundle.min.js' %}" crossorigin="anonymous"></script>
+
+{% comment %} Script para desplegar el slider {% endcomment %}
+<script src="{% static 'lib/startbootstrap-sb-admin-gh-pages/js/scripts.js' %} "></script>
+
+{% comment %} Jquery V3.6.0{% endcomment %}
+<script src="{% static 'lib/bootstrap-5.2.3-dist/jquery/jquery.min.js' %}"></script>

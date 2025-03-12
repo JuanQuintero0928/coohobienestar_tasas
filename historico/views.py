@@ -78,9 +78,6 @@ class ModalPago(ListView):
         queryParamAsoc = ParametroAsociado.objects.get(asociado = kwargs['pkAsociado'])
         queryHistorial = HistorialPagos.objects.filter(asociado = kwargs['pkAsociado']).exists()
 
-
-        
-       
         if queryHistorial:
             mesesPagados = HistorialPagos.objects.filter(asociado = kwargs['pkAsociado']).values('mesPago')
             queryMes = (MesTarifa.objects
@@ -93,12 +90,12 @@ class ModalPago(ListView):
 
         queryHistorial = HistorialPagos.objects.filter(asociado = kwargs['pkAsociado']).aggregate(total=Sum('diferencia'))
         total_diferencia = queryHistorial['total'] or 0  # Se obtiene el valor de la suma a 0 si no hay datos
-        return render(request, template_name, {'pkAsociado':kwargs['pkAsociado'], 'vista':kwargs['vista'] ,'query':queryValor, 'queryMes':queryMes, 'queryPago':queryPago, 'diferencia':total_diferencia})
+        return render(request, template_name, {'pkAsociado':kwargs['pkAsociado'], 'vista':kwargs['vista'] ,'query':queryValor, 'queryMes':queryMes, 'queryPago':queryPago, 'diferencia':total_diferencia, 'queryParametro':queryParamAsoc})
 
     def post(self, request, *args, **kwargs):
         fechaPago = request.POST['fechaPago']
         formaPago = request.POST['formaPago']
-        valorPago = int(request.POST['valorPago'])
+        # valorPago = int(request.POST['valorPago'])
         tarifaAsociado = TarifaAsociado.objects.get(asociado = kwargs['pkAsociado'])
         diferencia = request.POST['diferencia']
         valorDiferencia = int(diferencia.replace('.', ''))
@@ -113,14 +110,19 @@ class ModalPago(ListView):
         
         # Se recorre los switch activos, con el pk del mes activo
         for contador, pk in enumerate(switches_activos, start=1):
-            valorMes = TarifaAsociado.objects.get(asociado = kwargs['pkAsociado']).cuota
+            # valorMes = TarifaAsociado.objects.get(asociado = kwargs['pkAsociado']).cuota
+            if diferencia != 0 and cantidadSwitches == contador:
+                valorPago = int(request.POST.get(f'valorMes{pk}', 0)) + valorDiferencia
+            else:
+                valorPago = int(request.POST.get(f'valorMes{pk}', 0))
             pago = {
                     'asociado': Asociado.objects.get(pk = kwargs['pkAsociado']),
                     'mesPago': MesTarifa.objects.get(pk = pk),
                     'fechaPago': fechaPago,
                     'formaPago': FormaPago.objects.get(pk = formaPago),
                     'diferencia': valorDiferencia if cantidadSwitches == contador else 0,
-                    'valorPago':  valorMes if contador < cantidadSwitches else valorMes + valorDiferencia,
+                    # 'valorPago':  valorMes if contador < cantidadSwitches else valorMes + valorDiferencia,
+                    'valorPago' : valorPago,
                     'estadoRegistro': True,
                     'userCreacion': User.objects.get(pk = request.user.pk),
                 }
@@ -149,18 +151,19 @@ class EditarPago(ListView):
     
     def post(self, request, *args, **kwargs):
         objHistorico = HistorialPagos.objects.get(pk = kwargs['pk'])
-        objTarifa = TarifaAsociado.objects.get(asociado = kwargs['pkAsociado'])
-        valorPago = int(request.POST['valorPago'])
-        # se valida si el valor pago es igual al valor real que debe pagar
-        if valorPago != objTarifa.cuota:
-            diferencia = valorPago - objTarifa.cuota
-            objHistorico.diferencia = diferencia
-        else:
-            objHistorico.diferencia = 0
+        # objTarifa = TarifaAsociado.objects.get(asociado = kwargs['pkAsociado'])
+        # valorPago = int(request.POST['valorPago'])
+        # # se valida si el valor pago es igual al valor real que debe pagar
+        # if valorPago != objTarifa.cuota:
+        #     diferencia = valorPago - objTarifa.cuota
+        #     objHistorico.diferencia = diferencia
+        # else:
+        #     objHistorico.diferencia = 0
         objHistorico.mesPago = MesTarifa.objects.get(pk = request.POST['mesPago'])
         objHistorico.formaPago = FormaPago.objects.get(pk = request.POST['formaPago'])
         objHistorico.fechaPago = request.POST['fechaPago']
         objHistorico.valorPago = request.POST['valorPago']
+        objHistorico.diferencia = request.POST['diferencia']
         objHistorico.userModificacion = User.objects.get(pk = request.user.pk)
         objHistorico.save()
         messages.info(request, 'Pago Modificado Correctamente')
@@ -171,3 +174,20 @@ class EditarPago(ListView):
             url = reverse('asociado:historialPagos', args=[kwargs['pkAsociado']])
 
         return HttpResponseRedirect(url)
+
+class EliminarPago(ListView):
+    def get(self, request, *args, **kwargs):
+        template_name = 'proceso/pago/eliminar.html'
+        query = HistorialPagos.objects.get(pk = kwargs['pk'])
+        context = {'query': query,
+                   'pk': kwargs['pk'],
+                   'pkAsociado': kwargs['pkAsociado'],
+                   'vista': kwargs['vista'],
+                   }
+        return render(request, template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        objHistorico = HistorialPagos.objects.get(pk = kwargs['pk'])
+        objHistorico.delete()
+        messages.info(request, 'Pago Eliminado Correctamente')
+        return HttpResponseRedirect(reverse('asociado:historialPagos', args=[kwargs['pkAsociado']]))
