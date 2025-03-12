@@ -93,7 +93,6 @@ class CrearAsociado(CreateView):
         
         numDoc = request.POST['numDocumento']
         validacion = Asociado.objects.filter(numDocumento = numDoc).exists()
-        print(validacion)
         if validacion:
             messages.warning(request, 'El asociado con cedula '+ numDoc + ' ya existe en la base de datos.')
             return HttpResponseRedirect(reverse_lazy('asociado:asociado'))
