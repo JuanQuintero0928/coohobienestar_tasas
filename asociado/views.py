@@ -159,15 +159,21 @@ class EditarAsociado(CreateView):
         # se guarda informacion en el modelo ASOCIADO
         obj = Asociado.objects.get(pk = kwargs['pkAsociado'])
         # para retirar un asociado
-        if request.POST['fechaRetiro'] != '' or request.POST['estadoAsociado'] == 'RETIRO':
-            if request.POST['fechaRetiro'] == '':
-                messages.warning(request, 'Debe llenar el campo Fecha Retiro')
-                return HttpResponseRedirect(reverse_lazy('asociado:verAsociado', args=[kwargs['pkAsociado']]))
-            if request.POST['estadoAsociado'] == 'ACTIVO':
-                messages.warning(request, 'Debe confirmar el estado del asociado en "RETIRO"')
-                return HttpResponseRedirect(reverse_lazy('asociado:verAsociado', args=[kwargs['pkAsociado']]))
+        if obj.estadoAsociado != request.POST['estadoAsociado']:
+            # se valida si en el form se paso de activo a retiro
+            if request.POST['estadoAsociado'] == 'RETIRO':
+                obj.fechaRetiro = request.POST['fechaRetiro']
+                obj.estadoAsociado = request.POST['estadoAsociado']
+            # si pasa de retiro o inactivo a activo
+            elif request.POST['estadoAsociado'] == 'ACTIVO':
+                obj.fechaRetiro = None
+                obj.estadoAsociado = request.POST['estadoAsociado']
+            # INACTIVO
+            else:
+                obj.estadoAsociado = request.POST['estadoAsociado']
+        elif obj.estadoAsociado == 'RETIRO':
             obj.fechaRetiro = request.POST['fechaRetiro']
-            obj.estadoAsociado = 'RETIRO'
+
         obj.hogarinfantil = request.POST['hogarinfantil']
         obj.nombre1 = request.POST['nombre1'].upper()
         if request.POST['nombre2'] != '':
@@ -178,8 +184,6 @@ class EditarAsociado(CreateView):
         obj.numDocumento = request.POST['numDocumento']
         obj.numCelular = request.POST['numCelular']
         obj.fechaIngreso = request.POST['fechaIngreso']
-        obj.estadoAsociado = 'ACTIVO'
-        obj.fechaRetiro = None
         obj.estadoRegistro = True
         obj.save()
         # se pone valor quemado en la busqueda con el pk, se busca tarifa de aportes y bienestar social

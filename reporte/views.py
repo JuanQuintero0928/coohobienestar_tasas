@@ -151,14 +151,16 @@ class VerConciliacionBancaria(ListView):
         queryHistorial = HistorialPagos.objects.filter(
             fechaPago__range=[fechaInicial, fechaFinal],
             formaPago_id=banco
-            ).values('asociado__id',
-                 'asociado__nombre1',
-                 'asociado__nombre2',
-                 'asociado__apellido1',
-                 'asociado__apellido2',
-                 'asociado__numDocumento',
-                 'formaPago_id__formaPago',
+            ).values(
+                'asociado__id',
+                'asociado__nombre1',
+                'asociado__nombre2',
+                'asociado__apellido1',
+                'asociado__apellido2',
+                'asociado__numDocumento',
+                'formaPago_id__formaPago',
                 'fechaPago',
+                'asociado__hogarinfantil',
             ).annotate(total_pagado=Sum('valorPago')).order_by('fechaPago')
         template_name = 'reporte/listarConciliacionBancaria.html'
         return render(request, template_name, {'query':queryHistorial,'post':'post', 'fechaIncialF':fechaInicialForm, 'fechaFinalF':fechaFinalForm, 'formaPago':formaPago, 'banco':banco})
@@ -175,14 +177,16 @@ class ExcelConciliacionBancaria(TemplateView):
         queryHistorial = HistorialPagos.objects.filter(
             fechaPago__range=[fechaInicial, fechaFinal],
             formaPago_id=banco
-            ).values('asociado__id',
-                 'asociado__nombre1',
-                 'asociado__nombre2',
-                 'asociado__apellido1',
-                 'asociado__apellido2',
-                 'asociado__numDocumento',
-                 'formaPago_id__formaPago',
+            ).values(
+                'asociado__id',
+                'asociado__nombre1',
+                'asociado__nombre2',
+                'asociado__apellido1',
+                'asociado__apellido2',
+                'asociado__numDocumento',
+                'formaPago_id__formaPago',
                 'fechaPago',
+                'asociado__hogarinfantil',
             ).annotate(total_pagado=Sum('valorPago')).order_by('fechaPago')
 
         # Estilos
@@ -196,32 +200,41 @@ class ExcelConciliacionBancaria(TemplateView):
         ws.title = 'Conciliación Bancaria'
         titulo1 = f"Conciliación Bancaria"
         ws['A1'] = titulo1    #Casilla en la que queremos poner la informacion
-        ws.merge_cells('A1:F1')
+        ws.merge_cells('A1:J1')
         ws['A1'].font = bold_font
         ws['A1'].alignment = alignment_center
         ws['A1'].fill = fill
 
-        ws['A2'] = 'Número registro'
+        ws['A2'] = 'Número Registro'
         ws['B2'] = 'Número Documento'
-        ws['C2'] = 'Nombre Completo'
-        ws['D2'] = 'Movimiento'
-        ws['E2'] = 'Valor'
-        ws['F2'] = 'Fecha Movimiento'
-     
+        ws['C2'] = 'Primer Nombre'
+        ws['D2'] = 'Segundo Nombre'
+        ws['E2'] = 'Primer Apellido'
+        ws['F2'] = 'Segundo Apellido'
+        ws['G2'] = 'Movimiento'
+        ws['H2'] = 'Valor'
+        ws['I2'] = 'Fecha Movimiento'
+        ws['J2'] = 'Unidad de Servicio'
+
+
         bold_font2 = Font(bold=True)
         center_alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
 
-        for col in range(1,7):
+        for col in range(1,11):
             cell = ws.cell(row=2, column=col)
             cell.font = bold_font2
             cell.alignment = center_alignment
 
         ws.column_dimensions['A'].width = 11
         ws.column_dimensions['B'].width = 14
-        ws.column_dimensions['C'].width = 40
-        ws.column_dimensions['D'].width = 20
+        ws.column_dimensions['C'].width = 14
+        ws.column_dimensions['D'].width = 14
         ws.column_dimensions['E'].width = 14
         ws.column_dimensions['F'].width = 14
+        ws.column_dimensions['G'].width = 14
+        ws.column_dimensions['H'].width = 14
+        ws.column_dimensions['I'].width = 14
+        ws.column_dimensions['J'].width = 14
 
         #Inicia el primer registro en la celda numero 3
         cont = 3
@@ -232,12 +245,16 @@ class ExcelConciliacionBancaria(TemplateView):
             fecha_pago = query['fechaPago']
             fecha_formateada = fecha_pago.strftime("%d/%m/%Y") if fecha_pago else ""
             #Row, son las filas , A,B,C,D osea row es igual al contador, y columnas 1,2,3
-            ws.cell(row = cont, column = 1).value = i                    
+            ws.cell(row = cont, column = 1).value = i                   
             ws.cell(row = cont, column = 2).value = int(query['asociado__numDocumento'])
-            ws.cell(row = cont, column = 3).value = f'{query['asociado__nombre1']}' + ' ' + f'{query['asociado__nombre2']}' + ' ' + f'{query['asociado__apellido1']}' + ' ' + f'{query['asociado__apellido2']}'
-            ws.cell(row = cont, column = 4).value = query['formaPago_id__formaPago']
-            ws.cell(row = cont, column = 5).value = query['total_pagado']
-            ws.cell(row = cont, column = 6).value = fecha_formateada
+            ws.cell(row = cont, column = 3).value = query['asociado__nombre1']
+            ws.cell(row = cont, column = 4).value = query['asociado__nombre2']
+            ws.cell(row = cont, column = 5).value = query['asociado__apellido1']
+            ws.cell(row = cont, column = 6).value = query['asociado__apellido2']
+            ws.cell(row = cont, column = 7).value = query['formaPago_id__formaPago']
+            ws.cell(row = cont, column = 8).value = query['total_pagado']
+            ws.cell(row = cont, column = 9).value = fecha_formateada
+            ws.cell(row = cont, column = 10).value = query['asociado__hogarinfantil']
         
             i+=1
             cont+=1

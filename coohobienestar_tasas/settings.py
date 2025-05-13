@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-1p#6j&pc%g^6-x5&#q_&*7-o-e$ak^krgu99&e^nyym6jwa522
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','192.168.0.100', '127.0.0.1','192.168.101.7','10.10.110.58']
+ALLOWED_HOSTS = ['localhost','192.168.0.100', '127.0.0.1','192.168.101.7','10.10.110.58','192.168.1.2']
 
 
 # Application definition
@@ -85,7 +85,8 @@ WSGI_APPLICATION = 'coohobienestar_tasas.wsgi.application'
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "cooho_tasas_sardinitos_2025",
+        "NAME": "cooho_tasas_jesus_2025",
+        # "NAME": "cooho_tasas_sardinitos_2025",
         "USER": "user_coohotasas",
         "PASSWORD": "1q2w3e4r",
         "PORT": 5432,
