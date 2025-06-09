@@ -36,12 +36,15 @@ class Asociado(models.Model):
     hogarinfantil = models.CharField('HogarInfantil', choices=hogarInfantilOp.choices, default=hogarInfantilOp.sardinitos, blank=False, null=False)
     estadoAsociado = models.CharField('Estado Asociado', choices=estadoAsociadoOp.choices, default=estadoAsociadoOp.activo, blank=False, null=False)
     desplazado = models.BooleanField('Desplazado', default=False, blank=False, null=False)
+    nombreAcudiente = models.CharField('Nombre Acudiente', max_length=50, null=True, blank=True)
+    numDocAcudiente = models.CharField('Número Documento Acudiente', max_length=12, null=True, blank=True)
+    tipoDocAcudiente = models.CharField('Tipo Documento Acudiente', choices=tipoDocumentoOp.choices, default=tipoDocumentoOp.cc, blank=True, null=True)
     estadoRegistro = models.BooleanField('Estado')
     fechaIngreso = models.DateField('Fecha Ingreso', blank=True, null=True)
     fechaRetiro = models.DateField('Fecha Retiro', blank=True, null=True)
     fechaCreacion = models.DateTimeField(auto_now_add=True)
     fechaModificacion = models.DateTimeField(auto_now=True)
-   
+
     class Meta:
         verbose_name = 'Asociado'
         ordering = ['pk']

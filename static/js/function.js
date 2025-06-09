@@ -48,6 +48,9 @@ function editarInputActualizacion(dato){
             document.getElementById('id_numDocumento').disabled = false;
             document.getElementById('id_numCelular').disabled = false;
             document.getElementById('id_cuota').disabled = false;
+            document.getElementById('id_nombreAcudiente').disabled = false;
+            document.getElementById('id_numeroAcudiente').disabled = false;
+            document.getElementById('id_tipoDocumentoAcudiente').disabled = false;
             document.getElementById('btn-guardar').hidden = false;
         break
         case "no_editar":
@@ -65,6 +68,9 @@ function editarInputActualizacion(dato){
             document.getElementById('id_numDocumento').disabled = true;
             document.getElementById('id_numCelular').disabled = true;
             document.getElementById('id_cuota').disabled = true;
+            document.getElementById('id_nombreAcudiente').disabled = true;
+            document.getElementById('id_numeroAcudiente').disabled = true;
+            document.getElementById('id_tipoDocumentoAcudiente').disabled = true;
             document.getElementById('btn-guardar').hidden = true;
         break
     } 

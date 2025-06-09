@@ -123,6 +123,26 @@
                                 <input type="number" value="{{objTarifaAsociado.cuota}}" class="form-control" name="cuota" id="id_cuota" min="0" required disabled>
                             </div>
                             <hr>
+                            <div class="col-md-3">
+                                <label for="id_nombreAcudiente" class="form-label">Nombre Completo Acudiente *</label>
+                                <input type="text" class="form-control input-form" name="nombreAcudiente" value="{{ objAsociado.nombreAcudiente }}" maxlength="50" id="id_nombreAcudiente" required disabled>
+                            </div>
+                            <div class="col-3">
+                                <label for="id_tipoDocumentoAcudiente" class="form-label">Tipo Documento *</label>
+                                <select name="tipoDocumentoAcudiente" class="form-select" id="id_tipoDocumentoAcudiente" disabled>
+                                    <option value="CC" {% if objAsociado.tipoDocAcudiente == 'CC' %} selected {% endif %}>CEDULA</option>
+                                    <option value="RC" {% if objAsociado.tipoDocAcudiente == 'RC' %} selected {% endif %}>REGISTRO CIVIL</option>
+                                    <option value="TI" {% if objAsociado.tipoDocutipoDocAcudientemento == 'TI' %} selected {% endif %}>TARJETA IDENTIDAD</option>
+                                    <option value="CE" {% if objAsociado.tipoDocAcudiente == 'CE' %} selected {% endif %}>CEDULA EXTRANJERA</option>
+                                    <option value="PA" {% if objAsociado.tipoDocAcudiente == 'PA' %} selected {% endif %}>PASAPORTE</option>
+                                    <option value="PPT" {% if objAsociado.tipoDocAcudiente == 'PPT' %} selected {% endif %}>PERMISO PROTECCION TEMPORAL</option>
+                                    <option value="SD" {% if objAsociado.tipoDocAcudiente == 'SD' %} selected {% endif %}>SIN DOCUMENTO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="id_numeroAcudiente" class="form-label">Número Documento Acudiente *</label>
+                                <input type="number" class="form-control input-form" name="numDocAcudiente" value="{{ objAsociado.numDocAcudiente }}" min="0" id="id_numeroAcudiente" required disabled>
+                            </div>
                         </form>                
                     </div>                
                 </div>                

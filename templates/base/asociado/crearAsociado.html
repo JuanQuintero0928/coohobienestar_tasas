@@ -83,7 +83,7 @@
                 {% comment %} Fila 2 {% endcomment %}
                 <div class="col-3">
                     <label for="id_tipoDocumento" class="form-label">Tipo Documento *</label>
-                    <select name="tipoDocumento" class="form-select" id="id_tipoDocumento">
+                    <select name="tipoDocumento" class="form-select" id="id_tipoDocumento" required>
                         <option value="RC" select>REGISTRO CIVIL</option>
                         <option value="CC">CEDULA</option>
                         <option value="TI">TARJETA IDENTIDAD</option>
@@ -104,6 +104,27 @@
                 <div class="col-3">
                     <label for="id_cuota" class="form-label">Cuota *</label>
                     <input type="number" class="form-control" name="cuota" id="id_cuota" min="0" required>
+                </div>
+                <hr>
+                <div class="col-md-3">
+                    <label for="id_nombreAcudiente" class="form-label">Nombre Completo Acudiente *</label>
+                    <input type="text" class="form-control input-form" name="nombreAcudiente" maxlength="50" id="id_nombreAcudiente" required>
+                </div>
+                <div class="col-3">
+                    <label for="id_tipoDocumentoAcudiente" class="form-label">Tipo Documento *</label>
+                    <select name="tipoDocumentoAcudiente" class="form-select" id="id_tipoDocumentoAcudiente" required>
+                        <option value="RC">REGISTRO CIVIL</option>
+                        <option value="CC" selected>CEDULA</option>
+                        <option value="TI">TARJETA IDENTIDAD</option>
+                        <option value="CE">CEDULA EXTRANJERA</option>
+                        <option value="PA">PASAPORTE</option>
+                        <option value="PPT">PERMISO PROTECCION TEMPORAL</option>
+                        <option value="SD">SIN DOCUMENTO</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="id_numeroAcudiente" class="form-label">Número Documento Acudiente *</label>
+                    <input type="number" class="form-control input-form" name="numDocAcudiente" min="0" id="id_numeroAcudiente" required>
                 </div>
                 <hr>
                 <div class="col-4">

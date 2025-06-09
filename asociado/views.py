@@ -110,6 +110,9 @@ class CrearAsociado(CreateView):
             obj.numCelular = request.POST['numCelular']
             obj.fechaIngreso = request.POST['fechaIngreso']
             obj.estadoAsociado = request.POST['estadoAsociado']
+            obj.nombreAcudiente = request.POST['nombreAcudiente'].upper()
+            obj.tipoDocAcudiente = request.POST['tipoDocumentoAcudiente']
+            obj.numDocAcudiente = request.POST['numDocAcudiente']
             obj.desplazado = 'desplazado' in request.POST
             obj.estadoRegistro = True
             obj.save()
@@ -184,6 +187,9 @@ class EditarAsociado(CreateView):
         obj.numDocumento = request.POST['numDocumento']
         obj.numCelular = request.POST['numCelular']
         obj.fechaIngreso = request.POST['fechaIngreso']
+        obj.nombreAcudiente = request.POST['nombreAcudiente'].upper()
+        obj.tipoDocAcudiente = request.POST['tipoDocumentoAcudiente']
+        obj.numDocAcudiente = request.POST['numDocAcudiente']
         obj.estadoRegistro = True
         obj.save()
         # se pone valor quemado en la busqueda con el pk, se busca tarifa de aportes y bienestar social
