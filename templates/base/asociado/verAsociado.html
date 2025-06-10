@@ -125,7 +125,7 @@
                             <hr>
                             <div class="col-md-3">
                                 <label for="id_nombreAcudiente" class="form-label">Nombre Completo Acudiente *</label>
-                                <input type="text" class="form-control input-form" name="nombreAcudiente" value="{{ objAsociado.nombreAcudiente }}" maxlength="50" id="id_nombreAcudiente" required disabled>
+                                <input type="text" class="form-control input-form" name="nombreAcudiente" {% if objAsociado.ciudadResidencia %} value="{{ objAsociado.nombreAcudiente }}" {% endif %} maxlength="50" id="id_nombreAcudiente" required disabled>
                             </div>
                             <div class="col-3">
                                 <label for="id_tipoDocumentoAcudiente" class="form-label">Tipo Documento *</label>
@@ -142,6 +142,14 @@
                             <div class="col-md-3">
                                 <label for="id_numeroAcudiente" class="form-label">Número Documento Acudiente *</label>
                                 <input type="number" class="form-control input-form" name="numDocAcudiente" value="{{ objAsociado.numDocAcudiente }}" min="0" id="id_numeroAcudiente" required disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="id_direccion" class="form-label">Dirección Residencia *</label>
+                                <input type="text" class="form-control input-form" {% if objAsociado.ciudadResidencia %} value="{{objAsociado.direccion}}" {% endif %} name="direccion" min="0" id="id_direccion" required disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="id_ciudad" class="form-label">Ciudad Residencia *</label>
+                                <input type="text" class="form-control input-form" {% if objAsociado.ciudadResidencia %} value="{{objAsociado.ciudadResidencia}}" {% endif %} name="ciudad" min="0" id="id_ciudad" required disabled>
                             </div>
                         </form>                
                     </div>                

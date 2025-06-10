@@ -39,6 +39,8 @@ class Asociado(models.Model):
     nombreAcudiente = models.CharField('Nombre Acudiente', max_length=50, null=True, blank=True)
     numDocAcudiente = models.CharField('Número Documento Acudiente', max_length=12, null=True, blank=True)
     tipoDocAcudiente = models.CharField('Tipo Documento Acudiente', choices=tipoDocumentoOp.choices, default=tipoDocumentoOp.cc, blank=True, null=True)
+    direccion = models.CharField('Dirección', blank=True, null=True)
+    ciudadResidencia = models.CharField('Ciudad', blank=True, null=True)
     estadoRegistro = models.BooleanField('Estado')
     fechaIngreso = models.DateField('Fecha Ingreso', blank=True, null=True)
     fechaRetiro = models.DateField('Fecha Retiro', blank=True, null=True)

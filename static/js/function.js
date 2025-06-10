@@ -51,6 +51,8 @@ function editarInputActualizacion(dato){
             document.getElementById('id_nombreAcudiente').disabled = false;
             document.getElementById('id_numeroAcudiente').disabled = false;
             document.getElementById('id_tipoDocumentoAcudiente').disabled = false;
+            document.getElementById('id_direccion').disabled = false;
+            document.getElementById('id_ciudad').disabled = false;
             document.getElementById('btn-guardar').hidden = false;
         break
         case "no_editar":
@@ -71,6 +73,8 @@ function editarInputActualizacion(dato){
             document.getElementById('id_nombreAcudiente').disabled = true;
             document.getElementById('id_numeroAcudiente').disabled = true;
             document.getElementById('id_tipoDocumentoAcudiente').disabled = true;
+            document.getElementById('id_direccion').disabled = true;
+            document.getElementById('id_ciudad').disabled = true;
             document.getElementById('btn-guardar').hidden = true;
         break
     } 
